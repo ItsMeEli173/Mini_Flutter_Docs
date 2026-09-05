@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'theme/custom_widgets.dart';
+
 /// ============================================================
 /// LECCIÓN REUTILIZABLE (patrón DemoCard)
 ///
@@ -29,10 +31,8 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      elevation: 2,
+    return StyleCard(
       margin: const EdgeInsets.only(bottom: 16),
-      clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

@@ -1,4 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'app_routes.dart';
+import 'settings/settings_screen.dart';
+import 'stage1_fundamentals.dart';
+import 'stage2_layout.dart';
+import 'stage3_state.dart';
+import 'stage4_visual.dart';
+import 'stage5_persistence.dart';
+import 'stage6_data.dart';
+import 'stage7_packages.dart';
+import 'theme/app_style.dart';
+import 'theme/app_theme.dart';
+import 'theme/custom_widgets.dart';
+import 'theme/scroll_behavior.dart';
+import 'theme/style_scope.dart';
 
 /// ============================================================
 /// FLUTTER DOCS — Aplicación de documentación resumida.
@@ -8,34 +24,96 @@ import 'package:flutter/material.dart';
 /// su propio ejemplo vivo (misma técnica que el Visual Playground).
 ///
 /// Estructura:
-///   main.dart            -> la app + el "escritorio" de etapas
-///   stage1_fundamentals.dart -> Etapa 1: Fundamentos
+///   main.dart                 -> la app + el "escritorio" de etapas
+///   settings/settings_screen  -> selector de estilos de la app
+///   theme/                    -> estilos, temas y widgets de tema
+///   stage1_fundamentals.dart  -> Etapa 1: Fundamentos
 /// ============================================================
 
-import 'stage1_fundamentals.dart';
-import 'stage2_layout.dart';
-import 'stage3_state.dart';
-import 'stage4_visual.dart';
-import 'stage5_persistence.dart';
-import 'stage6_data.dart';
-import 'stage7_packages.dart';
-
-void main() {
-  runApp(const FlutterDocs());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final savedStyle = prefs.getString('app_style');
+  final initialStyle = AppStyle.values.firstWhere(
+    (style) => style.name == savedStyle,
+    orElse: () => AppStyle.light,
+  );
+  runApp(FlutterDocs(initialStyle: initialStyle));
 }
 
-class FlutterDocs extends StatelessWidget {
-  const FlutterDocs({super.key});
+class FlutterDocs extends StatefulWidget {
+  const FlutterDocs({super.key, this.initialStyle = AppStyle.light});
+
+  /// Style to start with; the persisted value when launched via main().
+  final AppStyle initialStyle;
+
+  @override
+  State<FlutterDocs> createState() => _FlutterDocsState();
+}
+
+class _FlutterDocsState extends State<FlutterDocs> {
+  late AppStyle _style;
+
+  @override
+  void initState() {
+    super.initState();
+    _style = widget.initialStyle;
+  }
+
+  /// Applies the selected style immediately and persists it for next launch.
+  void _onStyleChanged(AppStyle style) {
+    setState(() => _style = style);
+    SharedPreferences.getInstance().then(
+      (prefs) => prefs.setString('app_style', style.name),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Docs',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6750A4)),
-        useMaterial3: true,
+    return StyleScope(
+      style: _style,
+      child: MaterialApp(
+        title: 'Flutter Docs',
+        // No darkTheme on purpose: "dark" is just another ThemeData, so the
+        // selected style always renders exactly as chosen (themeMode light).
+        theme: buildTheme(_style),
+        scrollBehavior: const AppScrollBehavior(),
+        builder: (context, child) => _StyleBackground(
+          style: _style,
+          child: child!,
+        ),
+        home: HomeScreen(
+          currentStyle: _style,
+          onStyleChanged: _onStyleChanged,
+        ),
       ),
-      home: const HomeScreen(),
+    );
+  }
+}
+
+/// Paints the colorful gradient behind the app for styles that need one.
+/// Plain styles simply return the child untouched.
+class _StyleBackground extends StatelessWidget {
+  const _StyleBackground({required this.style, required this.child});
+
+  final AppStyle style;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final gradient = buildBackgroundGradient(style);
+    if (gradient == null || gradient.isEmpty) {
+      return child;
+    }
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: gradient,
+        ),
+      ),
+      child: child,
     );
   }
 }
@@ -44,12 +122,37 @@ class FlutterDocs extends StatelessWidget {
 /// PANTALLA PRINCIPAL (el "escritorio" de etapas)
 /// ============================================================
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({
+    super.key,
+    required this.currentStyle,
+    required this.onStyleChanged,
+  });
+
+  /// The active style, forwarded to the settings screen.
+  final AppStyle currentStyle;
+
+  /// Callback used to change the app style from the settings screen.
+  final ValueChanged<AppStyle> onStyleChanged;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Flutter Docs')),
+      appBar: AppBar(
+        title: const Text('Flutter Docs'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: 'Configuración',
+            onPressed: () => pushScreen(
+              context,
+              screen: SettingsScreen(
+                currentStyle: currentStyle,
+                onStyleChanged: onStyleChanged,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: const [
@@ -153,9 +256,11 @@ class _StageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      elevation: 2,
+    return StyleCard(
       margin: const EdgeInsets.only(bottom: 12),
+      onTap: locked
+          ? null
+          : () => pushScreen(context, screen: screen!),
       child: ListTile(
         contentPadding: const EdgeInsets.all(12),
         leading: CircleAvatar(
@@ -192,12 +297,6 @@ class _StageCard extends StatelessWidget {
           color: locked ? theme.disabledColor : theme.colorScheme.primary,
         ),
         enabled: !locked,
-        onTap: locked
-            ? null
-            : () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => screen!),
-                ),
       ),
     );
   }
