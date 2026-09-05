@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_routes.dart';
 import 'lesson_card.dart';
 
 /// ============================================================
@@ -45,7 +46,7 @@ class Stage3Screen extends StatelessWidget {
             technicalName: 'Navigator.push / pop (mover pantallas)',
             purpose:
                 'La navegación: abrir OTRA pantalla (push) y volver a la anterior (pop). Es la "pila" de pantallas: como páginas apiladas; la última está arriba.',
-            how: 'Navigator.push(context, MaterialPageRoute(...)) abre una pantalla nueva ENCIMA. Navigator.pop(context) la cierra y vuelve. Entrá a la pantalla interna y volvé.',
+            how: 'Navigator.push(context, MaterialPageRoute(...)) abre una pantalla nueva ENCIMA. Navigator.pop(context) la cierra y vuelve. OJO: la API oficial es OPAQUE (pinta fondo blanco durante la transición); por eso la app la envuelve en una ruta transparente (app_routes.dart) para que el gradiente no parpadee. Entrá a la pantalla interna y volvé.',
             snippet:
                 "Navigator.push(\n  context,\n  MaterialPageRoute(\n    builder: (_) => OtraScreen(),\n  ),\n);\n\nNavigator.pop(context); // volver",
             demo: NavigationDemo(),
@@ -173,11 +174,12 @@ class NavigationDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () => Navigator.push(
+      // La app navega con pushScreen (ruta transparente, sin parpadeo).
+      // La API oficial de abajo (MaterialPageRoute) hace lo mismo pero
+      // pinta un fondo opaco durante la transición.
+      onPressed: () => pushScreen(
         context,
-        MaterialPageRoute(
-          builder: (context) => const _InnerScreen(),
-        ),
+        screen: const _InnerScreen(),
       ),
       icon: const Icon(Icons.open_in_new),
       label: const Text('Abrir pantalla interna'),
