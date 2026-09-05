@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'lesson_card.dart';
+import 'theme/styled_scaffold.dart';
 
 /// ============================================================
 /// ETAPA 2 · LAYOUT & STYLES
@@ -14,7 +15,7 @@ class Stage2Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StyledScaffold(
       appBar: AppBar(
         title: const Text('Etapa 2 · Layout & Styles'),
         backgroundColor: const Color(0xFF2E7D32),

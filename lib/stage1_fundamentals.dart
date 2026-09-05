@@ -1,6 +1,7 @@
 ﻿import 'package:flutter/material.dart';
 
 import 'lesson_card.dart';
+import 'theme/styled_scaffold.dart';
 
 /// ============================================================
 /// ETAPA 1 · FUNDAMENTOS
@@ -15,7 +16,7 @@ class Stage1Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StyledScaffold(
       appBar: AppBar(
         title: const Text('Etapa 1 · Fundamentos'),
         backgroundColor: const Color(0xFF6750A4),

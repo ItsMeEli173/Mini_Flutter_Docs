@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'lesson_card.dart';
+import 'theme/styled_scaffold.dart';
 
 /// ============================================================
 /// ETAPA 5 · PERSISTENCIA
@@ -16,7 +17,7 @@ class Stage5Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StyledScaffold(
       appBar: AppBar(
         title: const Text('Etapa 5 · Persistencia'),
         backgroundColor: const Color(0xFF1565C0),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_routes.dart';
 import 'lesson_card.dart';
+import 'theme/styled_scaffold.dart';
 
 /// ============================================================
 /// ETAPA 3 · STATE & INTERACTION
@@ -15,7 +16,7 @@ class Stage3Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StyledScaffold(
       appBar: AppBar(
         title: const Text('Etapa 3 · State & Interaction'),
         backgroundColor: const Color(0xFFEF6C00),
@@ -192,7 +193,7 @@ class _InnerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StyledScaffold(
       appBar: AppBar(title: const Text('Pantalla interna')),
       body: Center(
         child: Column(
