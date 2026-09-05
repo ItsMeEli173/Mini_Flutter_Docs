@@ -61,6 +61,7 @@ ThemeData _lightTheme() {
     colorScheme: scheme,
     useMaterial3: true,
     scaffoldBackgroundColor: scheme.surface,
+    canvasColor: scheme.surface,
     appBarTheme: AppBarTheme(
       backgroundColor: scheme.surface,
       elevation: 0,
@@ -80,6 +81,7 @@ ThemeData _darkTheme() {
     colorScheme: scheme,
     useMaterial3: true,
     scaffoldBackgroundColor: scheme.surface,
+    canvasColor: scheme.surface,
     appBarTheme: AppBarTheme(
       backgroundColor: scheme.surface,
       elevation: 0,
@@ -98,6 +100,7 @@ ThemeData _minimalTheme() {
     colorScheme: scheme,
     useMaterial3: true,
     scaffoldBackgroundColor: background,
+    canvasColor: background,
     appBarTheme: const AppBarTheme(
       backgroundColor: background,
       foregroundColor: Color(0xFF212121),
@@ -125,8 +128,10 @@ ThemeData _maximalTheme() {
     colorScheme: scheme,
     useMaterial3: true,
     // The real gradient lives in FlutterDocs.builder; a transparent
-    // scaffold lets it show through.
+    // scaffold and canvas let it show through (no white flash on
+    // route transitions, since the route base follows the gradient).
     scaffoldBackgroundColor: Colors.transparent,
+    canvasColor: Colors.transparent,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -149,6 +154,7 @@ ThemeData _neumorphTheme() {
     colorScheme: scheme,
     useMaterial3: true,
     scaffoldBackgroundColor: neumorphSurfaceColor,
+    canvasColor: neumorphSurfaceColor,
     appBarTheme: const AppBarTheme(
       backgroundColor: neumorphSurfaceColor,
       elevation: 0,
@@ -170,8 +176,11 @@ ThemeData _glassTheme() {
   return ThemeData(
     colorScheme: scheme,
     useMaterial3: true,
-    // The vibrant gradient is provided by FlutterDocs.builder.
+    // The vibrant gradient is provided by FlutterDocs.builder; a
+    // transparent scaffold + canvas avoid the white flash during
+    // route transitions (the gradient shows through instead).
     scaffoldBackgroundColor: Colors.transparent,
+    canvasColor: Colors.transparent,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
