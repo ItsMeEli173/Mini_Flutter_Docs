@@ -92,8 +92,10 @@ class _FlutterDocsState extends State<FlutterDocs> {
   }
 }
 
-/// Paints the colorful gradient behind the app for styles that need one.
-/// Plain styles simply return the child untouched.
+/// Paints the style floor behind the app so the first route always has a
+/// stable background (it is never inside a transition fade):
+///   - glass/maximal: the colorful gradient.
+///   - solid styles (light, dark, minimal, neumorph): the scaffold color.
 class _StyleBackground extends StatelessWidget {
   const _StyleBackground({required this.style, required this.child});
 
@@ -104,7 +106,13 @@ class _StyleBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     final gradient = buildBackgroundGradient(style);
     if (gradient == null || gradient.isEmpty) {
-      return child;
+      // Solid styles have no gradient: paint the plain scaffold background
+      // behind the Navigator so the home screen (a transparent StyledScaffold)
+      // never falls through to the black window background.
+      return ColoredBox(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: child,
+      );
     }
     return DecoratedBox(
       decoration: BoxDecoration(
