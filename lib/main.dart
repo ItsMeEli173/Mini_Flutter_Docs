@@ -16,6 +16,9 @@ import 'stage1_fundamentals.dart';
 import 'stage2_layout.dart';
 import 'stage3_state.dart';
 import 'stage4_visual.dart';
+import 'stage5_persistence.dart';
+import 'stage6_data.dart';
+import 'stage7_packages.dart';
 
 void main() {
   runApp(const FlutterDocs());
@@ -91,6 +94,33 @@ class HomeScreen extends StatelessWidget {
             color: Color(0xFFC62828),
             locked: false,
             screen: Stage4Screen(),
+          ),
+          _StageCard(
+            number: '5',
+            title: 'Persistence',
+            description: 'Guardar datos en el dispositivo: shared_preferences y carga async.',
+            icon: Icons.save_outlined,
+            color: Color(0xFF1565C0),
+            locked: false,
+            screen: Stage5Screen(),
+          ),
+          _StageCard(
+            number: '6',
+            title: 'Data & APIs',
+            description: 'JSON, HTTP real y modelos tipados: traer datos de internet.',
+            icon: Icons.cloud_outlined,
+            color: Color(0xFF00838F),
+            locked: false,
+            screen: Stage6Screen(),
+          ),
+          _StageCard(
+            number: '7',
+            title: 'Packages',
+            description: 'El "npm" de Flutter: pub.dev, versionado y la checklist de líder.',
+            icon: Icons.inventory_2_outlined,
+            color: Color(0xFF6A1B9A),
+            locked: false,
+            screen: Stage7Screen(),
           ),
         ],
       ),
