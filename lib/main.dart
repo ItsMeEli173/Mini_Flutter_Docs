@@ -15,6 +15,7 @@ import 'theme/app_theme.dart';
 import 'theme/custom_widgets.dart';
 import 'theme/scroll_behavior.dart';
 import 'theme/style_scope.dart';
+import 'theme/styled_scaffold.dart';
 
 /// ============================================================
 /// FLUTTER DOCS — Aplicación de documentación resumida.
@@ -136,7 +137,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StyledScaffold(
       appBar: AppBar(
         title: const Text('Flutter Docs'),
         actions: [
