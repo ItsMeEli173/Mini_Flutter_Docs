@@ -13,6 +13,7 @@ import 'stage7_packages.dart';
 import 'theme/app_style.dart';
 import 'theme/app_theme.dart';
 import 'theme/custom_widgets.dart';
+import 'theme/scroll_behavior.dart';
 import 'theme/style_scope.dart';
 
 /// ============================================================
@@ -76,6 +77,7 @@ class _FlutterDocsState extends State<FlutterDocs> {
         // No darkTheme on purpose: "dark" is just another ThemeData, so the
         // selected style always renders exactly as chosen (themeMode light).
         theme: buildTheme(_style),
+        scrollBehavior: const AppScrollBehavior(),
         builder: (context, child) => _StyleBackground(
           style: _style,
           child: child!,
