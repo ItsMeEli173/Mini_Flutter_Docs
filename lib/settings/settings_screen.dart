@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_style.dart';
 import '../theme/custom_widgets.dart';
 import '../theme/style_scope.dart';
+import '../theme/styled_scaffold.dart';
 
 /// Screen where the user picks the global [AppStyle].
 ///
@@ -28,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
     // after the style changes while this route stays on screen.
     final liveStyle = StyleScope.of(context);
     final theme = Theme.of(context);
-    return Scaffold(
+    return StyledScaffold(
       appBar: AppBar(title: const Text('Configuración')),
       body: ListView(
         padding: const EdgeInsets.all(16),
