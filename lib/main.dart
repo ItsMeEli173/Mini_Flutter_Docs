@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'app_routes.dart';
 import 'settings/settings_screen.dart';
 import 'stage1_fundamentals.dart';
 import 'stage2_layout.dart';
@@ -140,13 +141,11 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             tooltip: 'Configuración',
-            onPressed: () => Navigator.push(
+            onPressed: () => pushScreen(
               context,
-              MaterialPageRoute(
-                builder: (_) => SettingsScreen(
-                  currentStyle: currentStyle,
-                  onStyleChanged: onStyleChanged,
-                ),
+              screen: SettingsScreen(
+                currentStyle: currentStyle,
+                onStyleChanged: onStyleChanged,
               ),
             ),
           ),
@@ -259,10 +258,7 @@ class _StageCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       onTap: locked
           ? null
-          : () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => screen!),
-              ),
+          : () => pushScreen(context, screen: screen!),
       child: ListTile(
         contentPadding: const EdgeInsets.all(12),
         leading: CircleAvatar(
