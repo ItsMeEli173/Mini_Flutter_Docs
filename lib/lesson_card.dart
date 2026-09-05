@@ -37,8 +37,10 @@ class LessonCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            height: 170,
+            constraints: const BoxConstraints(minHeight: 170),
+            width: double.infinity,
             color: const Color(0xFF1E1E2E),
+            padding: const EdgeInsets.all(12),
             child: Center(child: demo),
           ),
           Padding(
