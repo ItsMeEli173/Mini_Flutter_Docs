@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'lesson_card.dart';
+import 'theme/styled_scaffold.dart';
 
 /// ============================================================
 /// ETAPA 4 · ADVANCED VISUAL
@@ -17,7 +18,7 @@ class Stage4Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StyledScaffold(
       appBar: AppBar(
         title: const Text('Etapa 4 · Advanced Visual'),
         backgroundColor: const Color(0xFFC62828),
