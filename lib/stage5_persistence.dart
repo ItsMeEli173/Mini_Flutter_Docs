@@ -190,7 +190,9 @@ class _FutureBuilderDemoState extends State<FutureBuilderDemo> {
         ),
         const SizedBox(height: 10),
         ElevatedButton(
-          onPressed: () => setState(() => _future = _fakeLoad()),
+          onPressed: () => setState(() {
+            _future = _fakeLoad();
+          }),
           child: const Text('Recargar (ver spinner)'),
         ),
       ],
